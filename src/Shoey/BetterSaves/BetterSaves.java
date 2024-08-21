@@ -60,17 +60,17 @@ public class BetterSaves extends BaseModPlugin {
             CampaignClockAPI clock = Global.getSector().getClock();
             String savNam = p.getNameString()+" c"+clock.getCycle()+" ";
             int temp = clock.getMonth();
-            if (temp > 10)
+            if (temp > 9)
                 savNam += temp + " ";
             else
                 savNam += "0" + temp + " ";
             temp = clock.getDay();
-            if (temp > 10)
+            if (temp > 9)
                 savNam += temp + " ";
             else
                 savNam += "0" + temp + " ";
             temp = clock.getHour();
-            if (temp > 10)
+            if (temp > 9)
                 savNam += temp;
             else
                 savNam += "0" + temp;
