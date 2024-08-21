@@ -1,11 +1,11 @@
 {
-    "id":"ShoeyBetterSaves", # For the convenience of troubleshooters, include your name and the mod name, not just an acronym.
-	"name":"Better Saves", # Displayed to the player
+    "id":"ShoeyBetterSaves",
+	"name":"Better Saves",
 	"author":"Shoey",
     "utility":"false",
 	"version":"1.0.0",
 	"description":"Better save menus and functionality.",
-    "gameVersion": "0.97a-RC6",
+    "gameVersion": "0.97a-RC11",
   	"jars":["jars/BetterSaves.jar"],
   	"modPlugin":"Shoey.BetterSaves.BetterSaves",
 	  	"dependencies": [
@@ -17,5 +17,5 @@
             "id": "lunalib",
             "name": "LunaLib"
         }
-    ],
+    ]
 }

@@ -15,7 +15,7 @@ public class ResetScript implements Runnable {
         System.out.println("BetterSaves: reset thread started.");
         while (true)
         {
-            try{Thread.sleep(100);} catch (InterruptedException e) {
+            try{Thread.sleep(500);} catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
             if (GameState.TITLE != Global.getCurrentState() && needToReset && !primeToReset) {
@@ -27,6 +27,7 @@ public class ResetScript implements Runnable {
                 BetterSaves.needToReset = false;
                 primeToReset = false;
                 System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
+                p = null;
                 System.out.println("\n\n\nBetterSaves: save path reset to " + launchSaveDir + "\n\n\n");
             }
         }
