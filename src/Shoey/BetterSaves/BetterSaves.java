@@ -40,7 +40,7 @@ public class BetterSaves extends BaseModPlugin {
         try {
             if (!CampaignEngine.getInstance().isIronMode()) {
                 p = CampaignEngine.getInstance().getPlayerPerson();
-
+                setSaveDir();
             } else p = null;
         } catch ( Exception e )
         {
