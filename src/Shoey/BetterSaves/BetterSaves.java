@@ -37,11 +37,16 @@ public class BetterSaves extends BaseModPlugin {
     @Override
     public void onGameLoad(boolean b) {
         super.onGameLoad(b);
-        if (!CampaignEngine.getInstance().isIronMode())
+        try {
+            if (!CampaignEngine.getInstance().isIronMode()) {
+                p = CampaignEngine.getInstance().getPlayerPerson();
+
+            } else p = null;
+        } catch ( Exception e )
         {
-            p = CampaignEngine.getInstance().getPlayerPerson();
-            setSaveDir();
-        } else p = null;
+            p = null;
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
