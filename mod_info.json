@@ -7,5 +7,5 @@
 	"description":"Better save menus and functionality.",
     "gameVersion": "0.97a-RC11",
   	"jars":["jars/BetterSaves.jar"],
-  	"modPlugin":"Shoey.BetterSaves.BetterSaves"
+  	"modPlugin":"Shoey.BetterSaves.MainPlugin"
 }

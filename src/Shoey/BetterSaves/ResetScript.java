@@ -2,10 +2,12 @@ package Shoey.BetterSaves;
 
 import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
-import java.lang.System;
-import java.util.Map;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
-import static Shoey.BetterSaves.BetterSaves.*;
+import java.lang.System;
+
+import static Shoey.BetterSaves.MainPlugin.*;
 
 public class ResetScript implements Runnable {
     @Override
@@ -16,22 +18,27 @@ public class ResetScript implements Runnable {
         while (true)
         {
             try{Thread.sleep(500);} catch (InterruptedException e) {
-                System.out.println("\n\n\nBetterSaves: "+e.getMessage()+"\n\n\n");
+                Logger thislog = Global.getLogger(this.getClass());
+                thislog.setLevel(Level.ERROR);
+                thislog.info(e.getMessage());
             }
             try {
                 if (GameState.TITLE != Global.getCurrentState() && needToReset && !primeToReset) {
                     primeToReset = true;
-                    System.out.println("\n\n\nBetterSaves: primed to reset save directory\n\n\n");
                 }
                 if (GameState.TITLE == Global.getCurrentState() && needToReset && primeToReset) {
-                    BetterSaves.needToReset = false;
+                    MainPlugin.needToReset = false;
                     primeToReset = false;
                     System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
                     p = null;
-                    System.out.println("\n\n\nBetterSaves: save path reset to " + launchSaveDir + "\n\n\n");
+                    Logger thislog = Global.getLogger(this.getClass());
+                    thislog.setLevel(Level.INFO);
+                    thislog.info("Save path reset to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
                 }
             } catch (Exception e) {
-                System.out.println("\n\n\nBetterSaves: "+e.getMessage()+"\n\n\n");
+                Logger thislog = Global.getLogger(this.getClass());
+                thislog.setLevel(Level.ERROR);
+                thislog.info(e.getMessage());
             }
         }
     }

@@ -4,11 +4,13 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.campaign.CampaignEngine;
 import com.fs.starfarer.api.campaign.CampaignClockAPI;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.lang.System;
 
 
-public class BetterSaves extends BaseModPlugin {
+public class MainPlugin extends BaseModPlugin {
 
     static String launchSaveDir = "";
     static boolean needToReset = false;
@@ -16,14 +18,14 @@ public class BetterSaves extends BaseModPlugin {
     static boolean justSaved = false;
     static boolean latestSaving = false;
     static PersonAPI p;
-
-
     public void setSaveDir()
     {
         if (p == null)
             return;
         System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "\\" + p.getNameString()+"_"+p.getId());
-        System.out.println("\n\n\nBetterSaves: set save path to "+System.getProperty("com.fs.starfarer.settings.paths.saves")+"\n\n\n");
+        Logger thislog = Global.getLogger(this.getClass());
+        thislog.setLevel(Level.INFO);
+        thislog.info("Set save directory property to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
         needToReset = true;
     }
 
@@ -32,6 +34,9 @@ public class BetterSaves extends BaseModPlugin {
         super.onApplicationLoad();
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
         RS.start();
+        Logger thislog = Global.getLogger(this.getClass());
+        thislog.setLevel(Level.INFO);
+        thislog.info("Set launchSaveDir to "+launchSaveDir);
     }
 
     @Override
@@ -42,10 +47,13 @@ public class BetterSaves extends BaseModPlugin {
                 p = CampaignEngine.getInstance().getPlayerPerson();
                 setSaveDir();
             } else p = null;
+
         } catch ( Exception e )
         {
             p = null;
-            System.out.println(e.getMessage());
+            Logger thislog = Global.getLogger(this.getClass());
+            thislog.setLevel(Level.ERROR);
+            thislog.info(e.getMessage());
         }
     }
 
@@ -59,6 +67,9 @@ public class BetterSaves extends BaseModPlugin {
         {
             System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
             CampaignEngine.getInstance().setSaveDirName("latest_" + p.getNameString()+"_"+p.getId());
+            Logger thislog = Global.getLogger(this.getClass());
+            thislog.setLevel(Level.INFO);
+            thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
             latestSaving = false;
         } else {
             setSaveDir();
@@ -81,6 +92,11 @@ public class BetterSaves extends BaseModPlugin {
                 savNam += "0" + temp;
 
             CampaignEngine.getInstance().setSaveDirName(savNam);
+
+            Logger thislog = Global.getLogger(this.getClass());
+            thislog.setLevel(Level.INFO);
+            thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
+
         }
     }
 
@@ -97,7 +113,12 @@ public class BetterSaves extends BaseModPlugin {
         } else {
             justSaved = true;
             latestSaving = true;
+
+            Logger thislog = Global.getLogger(this.getClass());
+            thislog.setLevel(Level.INFO);
+            thislog.info("Saving to character slot in root directory.");
             Global.getSector().getCampaignUI().cmdSave();
+
         }
     }
 }
