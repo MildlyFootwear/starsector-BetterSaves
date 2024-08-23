@@ -37,9 +37,9 @@ public class MainPlugin extends BaseModPlugin {
         thislog.setLevel(Level.INFO);
         thislog.info("Setting launchSaveDir.");
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
-        RS.start();
         thislog.setLevel(Level.INFO);
         thislog.info("Set launchSaveDir to "+launchSaveDir);
+        RS.start();
     }
 
     @Override

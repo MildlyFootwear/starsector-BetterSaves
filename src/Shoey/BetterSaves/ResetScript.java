@@ -6,6 +6,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.lang.System;
+import java.text.SimpleDateFormat;
+
 
 import static Shoey.BetterSaves.MainPlugin.*;
 
@@ -19,26 +21,23 @@ public class ResetScript implements Runnable {
         thislog.info("Reset thread started.");
         while (true)
         {
-            try{Thread.sleep(500);} catch (InterruptedException e) {
-                thislog.setLevel(Level.ERROR);
-                thislog.info(e.getMessage());
+//            thislog.setLevel(Level.INFO);
+//            thislog.info("Running check at "+new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()));
+            GameState currentState = Global.getCurrentState();
+            if (GameState.TITLE == currentState && needToReset && primeToReset && !launchSaveDir.isEmpty()) {
+                thislog.info("Resetting save path.");
+                MainPlugin.needToReset = false;
+                primeToReset = false;
+                System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
+                p = null;
+                thislog.setLevel(Level.INFO);
+                thislog.info("Save path reset to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
             }
-            try {
-                GameState currentState = Global.getCurrentState();
-                if (GameState.TITLE == currentState && needToReset && primeToReset) {
-                    thislog.info("Resetting save path.");
-                    MainPlugin.needToReset = false;
-                    primeToReset = false;
-                    System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
-                    p = null;
-                    thislog.setLevel(Level.INFO);
-                    thislog.info("Save path reset to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
-                }
-                if (GameState.TITLE != currentState && needToReset && !primeToReset) {
-                    thislog.info("Primed to reset.");
-                    primeToReset = true;
-                }
-            } catch (Exception e) {
+            if (GameState.TITLE != currentState && needToReset && !primeToReset) {
+                thislog.info("Primed to reset.");
+                primeToReset = true;
+            }
+            try{Thread.sleep(1000);} catch (InterruptedException e) {
                 thislog.setLevel(Level.ERROR);
                 thislog.info(e.getMessage());
             }
