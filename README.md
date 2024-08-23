@@ -14,4 +14,5 @@ Iron mode saves should not be affected by any changes.
 
 - Only saves made after the mod is installed will be properly organized. All subsequent saves will be properly organized, however, meaning old characters will still work.  
 - Due to Starsector's plugin interface prohibiting copying files, every time the game saves it'll save twice. Once to the main save folder and once to the character's sub folder.  
-- "Save" and "Save Copy" will function identically, with both always creating a new save slot, keeping the old save. Not a big issue, but worth noting.
+- "Save" and "Save Copy" will function identically, with both always creating a new save slot, keeping the old save. Not a big issue, but worth noting.  
+- Deleting a save on the main menu won't delete the saves in a character's sub folder.  
