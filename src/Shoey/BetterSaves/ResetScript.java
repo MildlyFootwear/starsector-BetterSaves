@@ -23,6 +23,17 @@ public class ResetScript implements Runnable {
         {
 //            thislog.setLevel(Level.INFO);
 //            thislog.info("Running check at "+new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()));
+            if (runningCode)
+            {
+                thislog.setLevel(Level.INFO);
+                thislog.info("Code in MainPlugin is running, skipping loop.");
+
+                try{Thread.sleep(1000);} catch (InterruptedException e) {
+                    thislog.setLevel(Level.ERROR);
+                    thislog.info(e.getMessage());
+                }
+                continue;
+            }
             GameState currentState = Global.getCurrentState();
             if (GameState.TITLE == currentState && needToReset && primeToReset && !launchSaveDir.isEmpty()) {
                 thislog.info("Resetting save path.");

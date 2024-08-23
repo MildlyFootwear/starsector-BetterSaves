@@ -17,12 +17,14 @@ public class MainPlugin extends BaseModPlugin {
     static Thread RS = new Thread(new ResetScript());
     static boolean justSaved = false;
     static boolean latestSaving = false;
+    static boolean runningCode = false;
     static PersonAPI p;
     private Logger thislog = Global.getLogger(this.getClass());
+
     public void setSaveDir()
     {
         thislog.setLevel(Level.INFO);
-        thislog.info("Setting save directory.");
+        thislog.info("Attempting to set save directory.");
         if (p == null)
             return;
         System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "\\" + p.getNameString()+"_"+p.getId());
@@ -45,6 +47,7 @@ public class MainPlugin extends BaseModPlugin {
     @Override
     public void onGameLoad(boolean b) {
         super.onGameLoad(b);
+        runningCode = true;
         thislog.setLevel(Level.INFO);
         thislog.info("Running onGameLoad.");
         try {
@@ -59,12 +62,14 @@ public class MainPlugin extends BaseModPlugin {
             thislog.setLevel(Level.ERROR);
             thislog.info(e.getMessage());
         }
+        runningCode = false;
     }
 
     @Override
     public void beforeGameSave()
     {
         super.beforeGameSave();
+        runningCode = true;
         thislog.setLevel(Level.INFO);
         thislog.info("Running beforeGameSave.");
         if (p == null)
@@ -116,6 +121,7 @@ public class MainPlugin extends BaseModPlugin {
         {
             justSaved = false;
             setSaveDir();
+            runningCode = false;
         } else {
             justSaved = true;
             latestSaving = true;
