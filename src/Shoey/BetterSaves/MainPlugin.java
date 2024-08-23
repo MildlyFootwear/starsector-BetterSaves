@@ -18,12 +18,14 @@ public class MainPlugin extends BaseModPlugin {
     static boolean justSaved = false;
     static boolean latestSaving = false;
     static PersonAPI p;
+    private Logger thislog = Global.getLogger(this.getClass());
     public void setSaveDir()
     {
+        thislog.setLevel(Level.INFO);
+        thislog.info("Setting save directory.");
         if (p == null)
             return;
         System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "\\" + p.getNameString()+"_"+p.getId());
-        Logger thislog = Global.getLogger(this.getClass());
         thislog.setLevel(Level.INFO);
         thislog.info("Set save directory property to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
         needToReset = true;
@@ -32,9 +34,10 @@ public class MainPlugin extends BaseModPlugin {
     @Override
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
+        thislog.setLevel(Level.INFO);
+        thislog.info("Setting launchSaveDir.");
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
         RS.start();
-        Logger thislog = Global.getLogger(this.getClass());
         thislog.setLevel(Level.INFO);
         thislog.info("Set launchSaveDir to "+launchSaveDir);
     }
@@ -42,6 +45,8 @@ public class MainPlugin extends BaseModPlugin {
     @Override
     public void onGameLoad(boolean b) {
         super.onGameLoad(b);
+        thislog.setLevel(Level.INFO);
+        thislog.info("Running onGameLoad.");
         try {
             if (!CampaignEngine.getInstance().isIronMode()) {
                 p = CampaignEngine.getInstance().getPlayerPerson();
@@ -51,7 +56,6 @@ public class MainPlugin extends BaseModPlugin {
         } catch ( Exception e )
         {
             p = null;
-            Logger thislog = Global.getLogger(this.getClass());
             thislog.setLevel(Level.ERROR);
             thislog.info(e.getMessage());
         }
@@ -61,13 +65,14 @@ public class MainPlugin extends BaseModPlugin {
     public void beforeGameSave()
     {
         super.beforeGameSave();
+        thislog.setLevel(Level.INFO);
+        thislog.info("Running beforeGameSave.");
         if (p == null)
             return;
         if (latestSaving)
         {
             System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
             CampaignEngine.getInstance().setSaveDirName("latest_" + p.getNameString()+"_"+p.getId());
-            Logger thislog = Global.getLogger(this.getClass());
             thislog.setLevel(Level.INFO);
             thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
             latestSaving = false;
@@ -93,7 +98,6 @@ public class MainPlugin extends BaseModPlugin {
 
             CampaignEngine.getInstance().setSaveDirName(savNam);
 
-            Logger thislog = Global.getLogger(this.getClass());
             thislog.setLevel(Level.INFO);
             thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
 
@@ -104,6 +108,8 @@ public class MainPlugin extends BaseModPlugin {
     public void afterGameSave()
     {
         super.afterGameSave();
+        thislog.setLevel(Level.INFO);
+        thislog.info("Running afterGameSave.");
         if (p == null)
             return;
         if (justSaved)
@@ -114,7 +120,6 @@ public class MainPlugin extends BaseModPlugin {
             justSaved = true;
             latestSaving = true;
 
-            Logger thislog = Global.getLogger(this.getClass());
             thislog.setLevel(Level.INFO);
             thislog.info("Saving to character slot in root directory.");
             Global.getSector().getCampaignUI().cmdSave();

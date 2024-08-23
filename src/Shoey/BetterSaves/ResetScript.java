@@ -14,29 +14,31 @@ public class ResetScript implements Runnable {
     public void run()
     {
         boolean primeToReset = false;
-        System.out.println("BetterSaves: reset thread started.");
+        Logger thislog = Global.getLogger(this.getClass());
+        thislog.setLevel(Level.INFO);
+        thislog.info("Reset thread started.");
         while (true)
         {
             try{Thread.sleep(500);} catch (InterruptedException e) {
-                Logger thislog = Global.getLogger(this.getClass());
                 thislog.setLevel(Level.ERROR);
                 thislog.info(e.getMessage());
             }
             try {
-                if (GameState.TITLE != Global.getCurrentState() && needToReset && !primeToReset) {
-                    primeToReset = true;
-                }
-                if (GameState.TITLE == Global.getCurrentState() && needToReset && primeToReset) {
+                GameState currentState = Global.getCurrentState();
+                if (GameState.TITLE == currentState && needToReset && primeToReset) {
+                    thislog.info("Resetting save path.");
                     MainPlugin.needToReset = false;
                     primeToReset = false;
                     System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
                     p = null;
-                    Logger thislog = Global.getLogger(this.getClass());
                     thislog.setLevel(Level.INFO);
                     thislog.info("Save path reset to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
                 }
+                if (GameState.TITLE != currentState && needToReset && !primeToReset) {
+                    thislog.info("Primed to reset.");
+                    primeToReset = true;
+                }
             } catch (Exception e) {
-                Logger thislog = Global.getLogger(this.getClass());
                 thislog.setLevel(Level.ERROR);
                 thislog.info(e.getMessage());
             }
