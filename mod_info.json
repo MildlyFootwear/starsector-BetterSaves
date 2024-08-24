@@ -1,6 +1,6 @@
 {
     "id":"ShoeyBetterSaves",
-	"name":"Better Saves",
+	"name":"BetterSaves",
 	"author":"Shoey",
     "utility":"true",
     "version": { "major":"0", "minor": "1", "patch": "0" },
