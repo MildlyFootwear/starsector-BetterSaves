@@ -14,7 +14,7 @@ public class MainPlugin extends BaseModPlugin {
 
     public static String launchSaveDir = "";
     public static boolean needToReset = false;
-    static Thread RS = new Thread(new ResetThread());
+    //static Thread RS = new Thread(new ResetThread());
     public static boolean justSaved = false;
     public static boolean latestSaving = false;
     public static boolean runningCode = false;
