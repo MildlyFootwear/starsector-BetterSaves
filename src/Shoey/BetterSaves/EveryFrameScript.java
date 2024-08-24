@@ -24,11 +24,11 @@ public class EveryFrameScript extends BaseEveryFrameCombatPlugin {
         if (timer > 0.5)
         {
             timer = 0;
-
             if (!runningCode)
             {
                 GameState currentState = Global.getCurrentState();
                 if (GameState.TITLE == currentState && needToReset && !launchSaveDir.isEmpty()) {
+                    thislog.setLevel(Level.INFO);
                     thislog.info("Resetting save path.");
                     needToReset = false;
                     System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
