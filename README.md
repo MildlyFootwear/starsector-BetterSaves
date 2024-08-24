@@ -10,6 +10,8 @@ Meaning, the Load Save button on the main menu will act more like a character se
 
 Iron mode saves should not be affected by any changes.  
 
+Outside of the game, saves will be named with the character name followed by cycle, month, day, hour. "Sheliak Parrish c206 03 02 04", for example.
+
 ## Known Issues  
 
 - Only saves made after the mod is installed will be properly organized. All subsequent saves will be properly organized, however, meaning old characters will still work.  
