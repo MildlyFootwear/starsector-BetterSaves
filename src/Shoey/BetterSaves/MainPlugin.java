@@ -12,13 +12,13 @@ import java.lang.System;
 
 public class MainPlugin extends BaseModPlugin {
 
-    static String launchSaveDir = "";
-    static boolean needToReset = false;
-    static Thread RS = new Thread(new ResetScript());
-    static boolean justSaved = false;
-    static boolean latestSaving = false;
-    static boolean runningCode = false;
-    static PersonAPI p;
+    public static String launchSaveDir = "";
+    public static boolean needToReset = false;
+    static Thread RS = new Thread(new ResetThread());
+    public static boolean justSaved = false;
+    public static boolean latestSaving = false;
+    public static boolean runningCode = false;
+    public static PersonAPI p;
     private Logger thislog = Global.getLogger(this.getClass());
 
     public void setSaveDir()
@@ -41,7 +41,7 @@ public class MainPlugin extends BaseModPlugin {
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
         thislog.setLevel(Level.INFO);
         thislog.info("Set launchSaveDir to "+launchSaveDir);
-        RS.start();
+        //RS.start();
     }
 
     @Override
