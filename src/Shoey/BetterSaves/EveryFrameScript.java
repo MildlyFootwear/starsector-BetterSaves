@@ -1,5 +1,6 @@
 package Shoey.BetterSaves;
 
+import com.fs.starfarer.api.combat.CombatEngineAPI;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -17,6 +18,13 @@ public class EveryFrameScript extends BaseEveryFrameCombatPlugin {
 
     Logger thislog = Global.getLogger(this.getClass());
     float timer = 0;
+
+    @Override
+    public void init(CombatEngineAPI engine) {
+        super.init(engine);
+        thislog.setLevel(Level.INFO);
+    }
+
     @Override
     public void advance(float amount, List<InputEventAPI> events) {
         super.advance(amount, events);
@@ -28,12 +36,10 @@ public class EveryFrameScript extends BaseEveryFrameCombatPlugin {
             {
                 GameState currentState = Global.getCurrentState();
                 if (GameState.TITLE == currentState && needToReset && !launchSaveDir.isEmpty()) {
-                    thislog.setLevel(Level.INFO);
                     thislog.info("Resetting save path.");
                     needToReset = false;
                     System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
                     p = null;
-                    thislog.setLevel(Level.INFO);
                     thislog.info("Save path reset to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
                 }
             }
