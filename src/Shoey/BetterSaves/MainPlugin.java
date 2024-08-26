@@ -1,5 +1,6 @@
 package Shoey.BetterSaves;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.SettingsAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.campaign.CampaignEngine;
@@ -7,6 +8,7 @@ import com.fs.starfarer.api.campaign.CampaignClockAPI;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.lang.System;
 
 
@@ -14,7 +16,6 @@ public class MainPlugin extends BaseModPlugin {
 
     public static String launchSaveDir = "";
     public static boolean needToReset = false;
-    //static Thread RS = new Thread(new ResetThread());
     public static boolean justSaved = false;
     public static boolean latestSaving = false;
     public static boolean runningCode = false;
@@ -36,12 +37,16 @@ public class MainPlugin extends BaseModPlugin {
     @Override
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
+        SettingsAPI settings = Global.getSettings();
+
+        if (!settings.fileExistsInCommon("rootCommon"))
+            settings.writeTextFileToCommon("rootCommon", "This file is used so BetterSaves can identify if the common directory under saves has been configured properly.");
+
         thislog.setLevel(Level.INFO);
         thislog.info("Setting launchSaveDir.");
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
         thislog.setLevel(Level.INFO);
         thislog.info("Set launchSaveDir to "+launchSaveDir);
-        //RS.start();
     }
 
     @Override
