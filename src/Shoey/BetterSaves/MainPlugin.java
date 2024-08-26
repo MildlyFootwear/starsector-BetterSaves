@@ -42,16 +42,16 @@ public class MainPlugin extends BaseModPlugin {
         if (!settings.fileExistsInCommon("rootCommon"))
             settings.writeTextFileToCommon("rootCommon", "This file is used so BetterSaves can identify if the common directory under saves has been configured properly.");
 
-        thislog.info("Setting launchSaveDir.");
+        thislog.debug("Setting launchSaveDir.");
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
-        thislog.info("Set launchSaveDir to "+launchSaveDir);
+        thislog.debug("Set launchSaveDir to "+launchSaveDir);
     }
 
     @Override
     public void onGameLoad(boolean b) {
         super.onGameLoad(b);
         runningCode = true;
-        thislog.info("Running onGameLoad.");
+        thislog.debug("Running onGameLoad.");
         try {
             if (!CampaignEngine.getInstance().isIronMode()) {
                 p = CampaignEngine.getInstance().getPlayerPerson();
@@ -72,14 +72,13 @@ public class MainPlugin extends BaseModPlugin {
     {
         super.beforeGameSave();
         runningCode = true;
-        thislog.info("Running beforeGameSave.");
+        thislog.debug("Running beforeGameSave.");
         if (p == null)
             return;
         if (latestSaving)
         {
             System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
             CampaignEngine.getInstance().setSaveDirName("latest_" + p.getNameString()+"_"+p.getId());
-            thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
             latestSaving = false;
         } else {
             setSaveDir();
@@ -102,16 +101,16 @@ public class MainPlugin extends BaseModPlugin {
                 savNam += "0" + temp;
 
             CampaignEngine.getInstance().setSaveDirName(savNam);
-            thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
-
         }
+        thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
+
     }
 
     @Override
     public void afterGameSave()
     {
         super.afterGameSave();
-        thislog.info("Running afterGameSave.");
+        thislog.debug("Running afterGameSave.");
         if (p == null)
             return;
         if (justSaved)
