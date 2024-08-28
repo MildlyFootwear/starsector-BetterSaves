@@ -8,7 +8,6 @@ import com.fs.starfarer.api.campaign.CampaignClockAPI;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.lang.System;
 
 
@@ -24,10 +23,10 @@ public class MainPlugin extends BaseModPlugin {
 
     public void setSaveDir()
     {
-        thislog.info("Attempting to set save directory.");
+        thislog.debug("Attempting to set save directory.");
         if (p == null)
             return;
-        System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "\\" + p.getNameString()+"_"+p.getId());
+        System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "/" + p.getNameString()+"_"+p.getId());
         thislog.info("Set save directory property to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
         needToReset = true;
     }
@@ -63,6 +62,12 @@ public class MainPlugin extends BaseModPlugin {
             p = null;
             thislog.setLevel(Level.ERROR);
             thislog.info(e.getMessage());
+        }
+        SettingsAPI settings = Global.getSettings();
+
+        if (!settings.fileExistsInCommon("rootCommon")) {
+            thislog.info("rootCommon not found");
+            Global.getSector().addTransientScript(new CommonMessageTimer());
         }
         runningCode = false;
     }

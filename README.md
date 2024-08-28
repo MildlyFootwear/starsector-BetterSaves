@@ -14,6 +14,12 @@ Outside of the game, saves will be named with the character name followed by cyc
 
 Short demonstration: https://www.youtube.com/watch?v=4fRm43ifCx4
 
+## Usage / "Redirect missing" Message
+
+When you create a new character or use a pre-existing one, you will want to drag and drop their newly created folder onto "link.bat" in the BetterSaves folder.  
+This will link the character's "common" folder (frequently used for settings, such as those changed with lunaLib) to the "common" folder present in the original save directory.  
+If this step is skipped some mods may behave wonky. Your mileage will vary.
+
 ## Known Issues  
 
 - Only saves made after the mod is installed will be properly organized unless you move old saves into the new directory manually. All subsequent saves will be properly organized, however, meaning old characters will still work.  
