@@ -16,7 +16,7 @@ Short demonstration: https://www.youtube.com/watch?v=4fRm43ifCx4
 
 ## Usage / "Redirect missing" Message
 
-When you create a new character or use a pre-existing one, you will want to drag and drop their newly created folder onto "link.bat" in the BetterSaves folder.  
+When you create a new character or use a pre-existing one, you will want to drag and drop their newly created folder onto "link.bat" in BetterSaves' mod folder.  
 This will link the character's "common" folder (frequently used for settings, such as those changed with lunaLib) to the "common" folder present in the original save directory.  
 If this step is skipped some mods may behave wonky. Your mileage will vary.
 
