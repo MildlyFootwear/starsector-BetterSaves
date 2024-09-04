@@ -3,7 +3,7 @@
 	"name":"BetterSaves",
 	"author":"Shoey",
     "utility":"true",
-    "version": { "major":"0", "minor": "1", "patch": "1" },
+    "version": { "major":"0", "minor": "1", "patch": "2" },
 	"description":"Better save menus and functionality.",
     "gameVersion": "0.97a-RC11",
   	"jars":["jars/BetterSaves.jar"],
