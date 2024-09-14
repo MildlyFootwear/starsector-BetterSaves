@@ -19,38 +19,38 @@ public class MainPlugin extends BaseModPlugin {
     public static boolean latestSaving = false;
     public static boolean runningCode = false;
     public static PersonAPI p;
-    private Logger thislog = Global.getLogger(this.getClass());
+    private Logger log = Global.getLogger(this.getClass());
 
     public void setSaveDir()
     {
-        thislog.debug("Attempting to set save directory.");
+        log.debug("Attempting to set save directory.");
         if (p == null)
             return;
         System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "/" + p.getNameString()+"_"+p.getId());
-        thislog.info("Set save directory property to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
+        log.info("Set save directory property to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
         needToReset = true;
     }
 
     @Override
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
-        thislog.setLevel(Level.INFO);
+        log.setLevel(Level.DEBUG);
 
         SettingsAPI settings = Global.getSettings();
 
         if (!settings.fileExistsInCommon("rootCommon"))
             settings.writeTextFileToCommon("rootCommon", "This file is used so BetterSaves can identify if the common directory under saves has been configured properly.");
 
-        thislog.debug("Setting launchSaveDir.");
+        log.debug("Setting launchSaveDir.");
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
-        thislog.debug("Set launchSaveDir to "+launchSaveDir);
+        log.debug("Set launchSaveDir to "+launchSaveDir);
     }
 
     @Override
     public void onGameLoad(boolean b) {
         super.onGameLoad(b);
         runningCode = true;
-        thislog.debug("Running onGameLoad.");
+        log.debug("Running onGameLoad.");
         try {
             if (!CampaignEngine.getInstance().isIronMode()) {
                 p = CampaignEngine.getInstance().getPlayerPerson();
@@ -60,13 +60,12 @@ public class MainPlugin extends BaseModPlugin {
         } catch ( Exception e )
         {
             p = null;
-            thislog.setLevel(Level.ERROR);
-            thislog.info(e.getMessage());
+            log.setLevel(Level.ERROR);
+            log.info(e.getMessage());
         }
         SettingsAPI settings = Global.getSettings();
-
         if (!settings.fileExistsInCommon("rootCommon")) {
-            thislog.info("rootCommon not found");
+            log.info("rootCommon not found");
             Global.getSector().addTransientScript(new CommonMessageTimer());
         }
         runningCode = false;
@@ -77,14 +76,13 @@ public class MainPlugin extends BaseModPlugin {
     {
         super.beforeGameSave();
         runningCode = true;
-        thislog.debug("Running beforeGameSave.");
+        log.debug("Running beforeGameSave.");
         if (p == null)
             return;
-        if (latestSaving)
+        if (!justSaved)
         {
             System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
             CampaignEngine.getInstance().setSaveDirName("latest_" + p.getNameString()+"_"+p.getId());
-            latestSaving = false;
         } else {
             setSaveDir();
             CampaignClockAPI clock = Global.getSector().getClock();
@@ -107,7 +105,7 @@ public class MainPlugin extends BaseModPlugin {
 
             CampaignEngine.getInstance().setSaveDirName(savNam);
         }
-        thislog.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
+        log.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
 
     }
 
@@ -115,20 +113,15 @@ public class MainPlugin extends BaseModPlugin {
     public void afterGameSave()
     {
         super.afterGameSave();
-        thislog.debug("Running afterGameSave.");
+        log.debug("Running afterGameSave, saved to "+CampaignEngine.getInstance().getSaveDirName());
         if (p == null)
             return;
-        if (justSaved)
-        {
-            justSaved = false;
-            setSaveDir();
-            runningCode = false;
-        } else {
+        if (!justSaved) {
             justSaved = true;
-            latestSaving = true;
-            thislog.info("Saving to character slot in root directory.");
-            Global.getSector().getCampaignUI().cmdSave();
-
+            Global.getSector().addTransientScript(new CampaignSaveTimer());
+        } else {
+            justSaved = false;
+            runningCode = false;
         }
     }
 }
