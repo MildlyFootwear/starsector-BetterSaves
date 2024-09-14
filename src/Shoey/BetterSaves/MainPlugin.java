@@ -16,10 +16,9 @@ public class MainPlugin extends BaseModPlugin {
     public static String launchSaveDir = "";
     public static boolean needToReset = false;
     public static boolean justSaved = false;
-    public static boolean latestSaving = false;
     public static boolean runningCode = false;
     public static PersonAPI p;
-    private Logger log = Global.getLogger(this.getClass());
+    private final Logger log = Global.getLogger(this.getClass());
 
     public void setSaveDir()
     {
