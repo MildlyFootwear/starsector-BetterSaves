@@ -34,7 +34,7 @@ public class MainPlugin extends BaseModPlugin {
     @Override
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
-        log.setLevel(Level.DEBUG);
+        log.setLevel(Level.INFO);
 
         SettingsAPI settings = Global.getSettings();
 
