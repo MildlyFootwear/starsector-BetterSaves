@@ -33,7 +33,7 @@ public class MainPlugin extends BaseModPlugin {
     @Override
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
-        log.setLevel(Level.INFO);
+        log.setLevel(Level.DEBUG);
 
         SettingsAPI settings = Global.getSettings();
 
@@ -67,6 +67,7 @@ public class MainPlugin extends BaseModPlugin {
             log.info("rootCommon not found");
             Global.getSector().addTransientScript(new CommonMessageTimer());
         }
+        Global.getSector().addTransientScript(new ListenerPurge());
         runningCode = false;
     }
 
