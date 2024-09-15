@@ -1,6 +1,6 @@
 {
     "plugins":
     {
-        "BetterSavesScript":"Shoey.BetterSaves.EveryFrameScript"
+        "BetterSavesScript":"Shoey.BetterSaves.ScriptSaveDirectoryReset"
     },	
 }
