@@ -21,7 +21,7 @@ public class CampaignSaveTimer implements EveryFrameScript {
     @Override
     public void advance(float amount) {
         timer += amount;
-        if (timer > 0.25) {
+        if (timer > 0.3 && !Global.getSector().getCampaignUI().isShowingDialog() && !Global.getSector().getCampaignUI().isShowingMenu()) {
             Global.getSector().getCampaignUI().cmdSave();
             saved = true;
         }
