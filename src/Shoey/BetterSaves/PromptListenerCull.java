@@ -112,6 +112,7 @@ public class PromptListenerCull implements EveryFrameScript {
                     m += "You can now disable the Listener Culler in Luna's Mod Settings menu if you don't want to see anymore prompts. Do note that if you do that, older saves won't be checked for this issue unless you re-enable it.\n\nSorry for the inconvenience this caused.";
 
                     Global.getSector().getCampaignUI().showMessageDialog(m);
+                    Global.getSector().setPaused(true);
                 }
                 ReadyForSavePrompting = true;
                 done = true;
