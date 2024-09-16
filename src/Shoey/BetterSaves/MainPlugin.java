@@ -1,4 +1,5 @@
 package Shoey.BetterSaves;
+import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.SettingsAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
@@ -46,6 +47,9 @@ public class MainPlugin extends BaseModPlugin {
         else
             logLevel =  Level.INFO;
         ListenerCulling = Boolean.TRUE.equals(LunaSettings.getBoolean("ShoeyBetterSaves","ListenerCulling"));
+        if (Global.getCurrentState() == GameState.CAMPAIGN && ListenerCulling)
+            Global.getSector().addTransientScript(new PromptListenerCull());
+
     }
     
     @Override
