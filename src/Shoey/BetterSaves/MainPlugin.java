@@ -28,7 +28,6 @@ public class MainPlugin extends BaseModPlugin {
 
     public static boolean ReadyForCulling = true;
     public static boolean ReadyForSavePrompting = true;
-    static float time = 0;
 
     public void setSaveDir()
     {

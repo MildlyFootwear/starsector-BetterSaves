@@ -65,7 +65,6 @@ public class PromptListenerCull implements EveryFrameScript {
                     }
                 }
             }
-            CampaignUIAPI cUI = Global.getSector().getCampaignUI();
             if (!remove.isEmpty() && !cUI.isShowingMenu() && !cUI.isShowingDialog()) {
                 if (startingListenerCount == 0)
                     startingListenerCount = Global.getSector().getAllListeners().size();
