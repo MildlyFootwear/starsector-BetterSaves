@@ -47,8 +47,10 @@ public class MainPlugin extends BaseModPlugin {
         else
             logLevel =  Level.INFO;
         ListenerCulling = Boolean.TRUE.equals(LunaSettings.getBoolean("ShoeyBetterSaves","ListenerCulling"));
-        if (Global.getCurrentState() == GameState.CAMPAIGN && ListenerCulling)
+        if (Global.getCurrentState() == GameState.CAMPAIGN && ListenerCulling) {
             Global.getSector().addTransientScript(new PromptListenerCull());
+            ReadyForCulling = true;
+        }
 
     }
     
