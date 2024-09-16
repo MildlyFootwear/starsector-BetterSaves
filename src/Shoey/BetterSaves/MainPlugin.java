@@ -67,6 +67,7 @@ public class MainPlugin extends BaseModPlugin {
         log.debug("Setting launchSaveDir.");
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
         log.debug("Set launchSaveDir to "+launchSaveDir);
+
         LunaSettings.addSettingsListener(new LunaListener());
 
     }
