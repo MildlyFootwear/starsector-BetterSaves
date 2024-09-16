@@ -8,8 +8,10 @@ import com.fs.starfarer.api.campaign.CampaignClockAPI;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.lang.System;
 
+import lunalib.lunaSettings.LunaSettings;
 
 public class MainPlugin extends BaseModPlugin {
 
@@ -17,8 +19,15 @@ public class MainPlugin extends BaseModPlugin {
     public static boolean needToReset = false;
     public static boolean justSaved = false;
     public static boolean runningCode = false;
+    public static boolean ListenerCulling = true;
+    public static String currentListener = "";
     public static PersonAPI p;
     private final Logger log = Global.getLogger(this.getClass());
+    public static Level logLevel = Level.INFO;
+
+    public static boolean ReadyForCulling = true;
+    public static boolean ReadyForSavePrompting = true;
+    static float time = 0;
 
     public void setSaveDir()
     {
@@ -30,10 +39,20 @@ public class MainPlugin extends BaseModPlugin {
         needToReset = true;
     }
 
+    public static void setLuna()
+    {
+        if (Boolean.TRUE.equals(LunaSettings.getBoolean("ShoeyBetterSaves","Debugging")))
+            logLevel = Level.DEBUG;
+        else
+            logLevel =  Level.INFO;
+        ListenerCulling = Boolean.TRUE.equals(LunaSettings.getBoolean("ShoeyBetterSaves","ListenerCulling"));
+    }
+    
     @Override
     public void onApplicationLoad() throws Exception {
         super.onApplicationLoad();
-        log.setLevel(Level.DEBUG);
+        setLuna();
+        log.setLevel(logLevel);
 
         SettingsAPI settings = Global.getSettings();
 
@@ -43,6 +62,7 @@ public class MainPlugin extends BaseModPlugin {
         log.debug("Setting launchSaveDir.");
         launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
         log.debug("Set launchSaveDir to "+launchSaveDir);
+
     }
 
     @Override
@@ -59,15 +79,41 @@ public class MainPlugin extends BaseModPlugin {
         } catch ( Exception e )
         {
             p = null;
-            log.setLevel(Level.ERROR);
+            log.setLevel(logLevel);
             log.info(e.getMessage());
         }
+
         SettingsAPI settings = Global.getSettings();
+
         if (!settings.fileExistsInCommon("rootCommon")) {
+            ScriptSaveLoadCommonMissing s = new ScriptSaveLoadCommonMissing();
             log.info("rootCommon not found");
-            Global.getSector().addTransientScript(new CommonMessageTimer());
+            Global.getSector().addTransientScript(s);
         }
-        Global.getSector().addTransientScript(new ListenerPurge());
+
+        if (ListenerCulling)
+        {
+            PromptListenerCull s = new PromptListenerCull();
+            Global.getSector().addTransientScript(s);
+            ReadyForSavePrompting = false;
+        }
+
+        if (settings.fileExistsInCommon("BetterSaves/Save and Exited IDs.txt"))
+        {
+            String fileString = "";
+            try {
+                fileString = settings.readTextFileFromCommon("BetterSaves/Save and Exited IDs.txt");
+            } catch (IOException e) {
+                log.debug(e.getMessage());
+            }
+            if (fileString.contains(p.getId()))
+            {
+                PromptMissingCharacterSave s = new PromptMissingCharacterSave();
+                Global.getSector().addTransientScript(s);
+                log.info("Found character ID in Save and Exited IDs");
+            }
+        }
+
         runningCode = false;
     }
 
@@ -121,7 +167,24 @@ public class MainPlugin extends BaseModPlugin {
             Global.getSector().addTransientScript(new CampaignSaveTimer());
         } else {
             justSaved = false;
-            runningCode = false;
+            SettingsAPI settings = Global.getSettings();
+
+            if (settings.fileExistsInCommon("BetterSaves/Save and Exited IDs.txt"))
+            {
+                String fileString = "";
+                try {
+                    fileString = settings.readTextFileFromCommon("BetterSaves/Save and Exited IDs.txt");
+
+                    if (fileString.contains(p.getId()))
+                    {
+                        fileString = fileString.replaceAll(" "+p.getId(),"");
+                        settings.writeTextFileToCommon("BetterSaves/Save and Exited IDs.txt",fileString);
+                    }
+                } catch (IOException e) {
+                    log.debug(e.getMessage());
+                }
+            }
         }
+        runningCode = false;
     }
 }

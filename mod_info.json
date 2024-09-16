@@ -7,5 +7,17 @@
 	"description":"Better save menus and functionality.",
     "gameVersion": "0.97a-RC11",
   	"jars":["jars/BetterSaves.jar"],
-  	"modPlugin":"Shoey.BetterSaves.MainPlugin"
+  	"modPlugin":"Shoey.BetterSaves.MainPlugin",
+
+	"dependencies":
+	[
+		{
+			"id": "lw_lazylib",
+			"name": "LazyLib"
+		},
+		{
+			"id": "lunalib",
+			"name": "LunaLib"
+		}
+	]
 }
