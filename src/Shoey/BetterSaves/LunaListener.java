@@ -7,6 +7,7 @@ import static Shoey.BetterSaves.MainPlugin.setLuna;
 public class LunaListener implements LunaSettingsListener {
     @Override
     public void settingsChanged(String s) {
-        setLuna();
+        if (s.equals("ShoeyBetterSaves"))
+            setLuna();
     }
 }
