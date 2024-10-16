@@ -158,7 +158,7 @@ public class MainPlugin extends BaseModPlugin {
         } else {
             setSaveDir();
             CampaignClockAPI clock = Global.getSector().getClock();
-            String savNam = p.getNameString()+" c"+clock.getCycle()+" ";
+            String savNam = "save_"+p.getNameString()+" c"+clock.getCycle()+" ";
             int temp = clock.getMonth();
             if (temp > 9)
                 savNam += temp + " ";
