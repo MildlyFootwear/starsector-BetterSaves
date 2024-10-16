@@ -73,6 +73,14 @@ public class MainPlugin extends BaseModPlugin {
     }
 
     @Override
+    public void onEnabled(boolean wasEnabledBefore) {
+        super.onEnabled(wasEnabledBefore);
+        if (!wasEnabledBefore)
+            Global.getSector().getMemory().set("$bs_clean", true);
+
+    }
+
+    @Override
     public void onGameLoad(boolean b) {
         super.onGameLoad(b);
         runningCode = true;
@@ -92,6 +100,7 @@ public class MainPlugin extends BaseModPlugin {
 
         if (p == null)
         {
+            log.debug("p null");
             runningCode = false;
             return;
         }
@@ -105,7 +114,10 @@ public class MainPlugin extends BaseModPlugin {
             Global.getSector().addTransientScript(s);
         }
 
-        if (ListenerCulling)
+        if (b)
+            Global.getSector().getMemory().set("$bs_clean", true);
+
+        if (ListenerCulling && !Global.getSector().getMemory().contains("$bs_clean"))
         {
             PromptListenerCull s = new PromptListenerCull();
             Global.getSector().addTransientScript(s);
