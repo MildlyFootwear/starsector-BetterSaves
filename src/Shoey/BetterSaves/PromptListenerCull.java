@@ -54,17 +54,17 @@ public class PromptListenerCull implements EveryFrameScript {
                         i = counts.get(l.getClass().toString());
                     }
                     i++;
-                    if (i == 50) {
+                    if (i == 20) {
                         remove.add(l.getClass().toString());
                     }
-                    if (i >= 50 && !listenerstoremove.contains(l)) {
+                    if (i >= 20 && !listenerstoremove.contains(l)) {
                         listenerstoremove.add(l);
                     }
                     counts.put(l.getClass().toString(), i);
                 }
                 for (CampaignEventListener l : Global.getSector().getAllListeners()) {
                     int i = counts.get(l.getClass().toString());
-                    if (i >= 50 && !listenerstoremove.contains(l)) {
+                    if (i >= 20 && !listenerstoremove.contains(l)) {
                         listenerstoremove.add(l);
                     }
                 }
@@ -111,10 +111,10 @@ public class PromptListenerCull implements EveryFrameScript {
                         m += "Removed " + (startingListenerCount - Global.getSector().getAllListeners().size()) + " scripts.\n";
 
                     m += "You can now disable the Listener Culler in Luna's Mod Settings menu if you don't want to see anymore prompts. Do note that if you do that, older saves won't be checked for this issue unless you re-enable it.\n\nSorry for the inconvenience this caused.";
-
                     Global.getSector().getCampaignUI().showMessageDialog(m);
                     Global.getSector().setPaused(true);
                 }
+                Global.getSector().getMemory().set("$bs_clean", true);
                 ReadyForSavePrompting = true;
                 done = true;
             }
