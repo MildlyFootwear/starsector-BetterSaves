@@ -90,6 +90,13 @@ public class MainPlugin extends BaseModPlugin {
             log.info(e.getMessage());
         }
 
+        if (p == null)
+        {
+            runningCode = false;
+            return;
+        }
+
+
         SettingsAPI settings = Global.getSettings();
 
         if (!settings.fileExistsInCommon("rootCommon")) {
@@ -135,7 +142,7 @@ public class MainPlugin extends BaseModPlugin {
         if (!justSaved)
         {
             System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
-            CampaignEngine.getInstance().setSaveDirName("latest_" + p.getNameString()+"_"+p.getId());
+            CampaignEngine.getInstance().setSaveDirName("save_latest_" + p.getNameString()+"_"+p.getId());
         } else {
             setSaveDir();
             CampaignClockAPI clock = Global.getSector().getClock();

@@ -39,9 +39,10 @@ public class PromptListenerCull implements EveryFrameScript {
             Logger log = Global.getLogger(this.getClass());
             log.setLevel(logLevel);
             log.info("Checking for listeners.");
-        }
-        if (currentListener.isEmpty() && ReadyForCulling)
             timer += amount;
+        } else if (currentListener.isEmpty() && ReadyForCulling)
+            timer += amount;
+
         CampaignUIAPI cUI = Global.getSector().getCampaignUI();
         if (timer > 1 && !cUI.isShowingMenu() && !cUI.isShowingDialog()) {
             timer = 0;
