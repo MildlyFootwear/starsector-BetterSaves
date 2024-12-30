@@ -1,8 +1,6 @@
 @echo off
 
-
-CD..
-@echo Linking %1\common to %CD%\saves\common.
+@echo Linking %1\common to %CD%\common.
 @echo Enter Y to confirm.
 
 
@@ -12,7 +10,7 @@ set /p "confirm="
 		rename %1\common "commonbackup"
 		@echo Renamed existing common folder to commonbackup.
 	)
-	mklink /j %1\common "%CD%\saves\common"
+	mklink /j %1\common "%CD%\common"
 ) else (
 @echo Link cancelled.)
 pause

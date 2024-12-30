@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.lang.System;
 
 import lunalib.lunaSettings.LunaSettings;
+import org.lwjgl.input.Keyboard;
 
 public class MainPlugin extends BaseModPlugin {
 
@@ -29,12 +30,12 @@ public class MainPlugin extends BaseModPlugin {
     public static boolean ReadyForCulling = true;
     public static boolean ReadyForSavePrompting = true;
 
-    public void setSaveDir()
+    public void setSaveDirToCharacter()
     {
         log.debug("Attempting to set save directory.");
         if (p == null)
             return;
-        System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "/" + p.getNameString()+"_"+p.getId());
+        System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir + "/saves_" + p.getNameString()+"_"+p.getId());
         log.info("Set save directory property to "+System.getProperty("com.fs.starfarer.settings.paths.saves"));
         needToReset = true;
     }
@@ -64,10 +65,6 @@ public class MainPlugin extends BaseModPlugin {
         if (!settings.fileExistsInCommon("rootCommon"))
             settings.writeTextFileToCommon("rootCommon", "This file is used so BetterSaves can identify if the common directory under saves has been configured properly.");
 
-        log.debug("Setting launchSaveDir.");
-        launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
-        log.debug("Set launchSaveDir to "+launchSaveDir);
-
         LunaSettings.addSettingsListener(new LunaListener());
 
     }
@@ -85,10 +82,16 @@ public class MainPlugin extends BaseModPlugin {
         super.onGameLoad(b);
         runningCode = true;
         log.debug("Running onGameLoad.");
+
+        if (launchSaveDir.isEmpty()) {
+            log.debug("Setting launchSaveDir.");
+            launchSaveDir = System.getProperty("com.fs.starfarer.settings.paths.saves");
+            log.debug("Set launchSaveDir to "+launchSaveDir);
+        }
         try {
-            if (!CampaignEngine.getInstance().isIronMode()) {
-                p = CampaignEngine.getInstance().getPlayerPerson();
-                setSaveDir();
+            if (!Global.getSector().isIronMode()) {
+                p = Global.getSector().getPlayerPerson();
+                setSaveDirToCharacter();
             } else p = null;
 
         } catch ( Exception e )
@@ -156,29 +159,34 @@ public class MainPlugin extends BaseModPlugin {
             System.setProperty("com.fs.starfarer.settings.paths.saves", launchSaveDir);
             CampaignEngine.getInstance().setSaveDirName("save_latest_" + p.getNameString()+"_"+p.getId());
         } else {
-            setSaveDir();
-            CampaignClockAPI clock = Global.getSector().getClock();
-            String savNam = "save_"+p.getNameString()+" c"+clock.getCycle()+" ";
-            int temp = clock.getMonth();
-            if (temp > 9)
-                savNam += temp + " ";
-            else
-                savNam += "0" + temp + " ";
-            temp = clock.getDay();
-            if (temp > 9)
-                savNam += temp + " ";
-            else
-                savNam += "0" + temp + " ";
-            temp = clock.getHour();
-            if (temp > 9)
-                savNam += temp;
-            else
-                savNam += "0" + temp;
+            setSaveDirToCharacter();
+            String savNam = getSavNam();
 
             CampaignEngine.getInstance().setSaveDirName(savNam);
         }
         log.info("Set the save subdirectory to "+CampaignEngine.getInstance().getSaveDirName());
 
+    }
+
+    private static String getSavNam() {
+        CampaignClockAPI clock = Global.getSector().getClock();
+        String savNam = "save_"+p.getNameString()+" c"+clock.getCycle()+" ";
+        int temp = clock.getMonth();
+        if (temp > 9)
+            savNam += temp + " ";
+        else
+            savNam += "0" + temp + " ";
+        temp = clock.getDay();
+        if (temp > 9)
+            savNam += temp + " ";
+        else
+            savNam += "0" + temp + " ";
+        temp = clock.getHour();
+        if (temp > 9)
+            savNam += temp;
+        else
+            savNam += "0" + temp;
+        return savNam;
     }
 
     @Override
